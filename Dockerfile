@@ -2,11 +2,9 @@
 FROM microsoft/dotnet:2.1-sdk AS builder
 WORKDIR /src
 
-COPY ["TheExampleApp/TheExampleApp.csproj" "TheExampleApp/"]
-COPY ["TheExampleApp.Tests/TheExampleApp.Tests.csproj" "TheExampleApp.Tests/"]
-
 RUN dotnet restore
-RUN dotnet build "TheExample.csproj"
+RUN dotnet build "app.csproj"
+RUN dotnet test "Tests.csproj"
 RUN dotnet publish -c Release -o /app/
 
 FROM microsoft/aspnetcore:2.2
