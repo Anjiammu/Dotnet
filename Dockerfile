@@ -1,14 +1,13 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
-WORKDIR /app
-EXPOSE 80
+    
+FROM microsoft/dotnet:2.1-sdk AS builder
+WORKDIR /src
 
 COPY . .
 RUN dotnet restore
-RUN dotnet build "TheExampleApp.csproj"
-RUN dotnet test "TheExampleApp.Tests.csproj"
+RUN dotnet build "TheExample.csproj"
+RUN dotnet publish -c Release -o /app/
 
-COPY . .
-FROM builder
+FROM microsoft/aspnetcore:2.2
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=Heroku
 COPY --from=builder /app .
