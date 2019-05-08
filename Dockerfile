@@ -2,8 +2,8 @@ FROM microsoft/dotnet:2.1-sdk AS builder
 WORKDIR /src
 
 RUN dotnet restore
-RUN dotnet build TheExampleApp.csproj
-RUN dotnet test TheExampleApp.Tests.csproj
+RUN dotnet build TheExampleApp.sln
+#RUN dotnet test TheExampleApp.Tests.csproj
 
 COPY . .
 FROM builder
