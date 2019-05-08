@@ -5,7 +5,7 @@ COPY . .
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/
 
-FROM microsoft/aspnetcore:2.
+FROM microsoft/aspnetcore:2.2
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=Heroku
 COPY --from=builder /app .
