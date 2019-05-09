@@ -1,14 +1,16 @@
-    
-FROM microsoft/dotnet:2.1-sdk AS builder
-WORKDIR /src
-COPY . .
-RUN dotnet restore "app.csproj"
-RUN dotnet build "app.csproj" -c Release -o /app
-RUN dotnet test "Tests.csproj"
-RUN dotnet publish -c Release -o /app/
-
-FROM microsoft/aspnetcore:2.2
+FROM microsoft/aspnetcore-build:1.1 AS build-env
 WORKDIR /app
-ENV ASPNETCORE_ENVIRONMENT=Heroku
-COPY --from=builder /app .
-ENTRYPOINT ["dotnet", "TheExampleApp.dll"]
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM microsoft/aspnetcore:1.1
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "aspnet-core-dotnet-core.dll"]
