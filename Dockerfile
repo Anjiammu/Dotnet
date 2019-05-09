@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:1.1 AS sathya
+FROM microsoft/dotnet:2.1-sdk AS builder
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -13,5 +13,5 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM microsoft/aspnetcore:1.1
 WORKDIR /app
-COPY --from=sathya /app/out .
+COPY --from=builder /app/out .
 ENTRYPOINT ["dotnet", "aspnet-core-dotnet-core.dll"]
