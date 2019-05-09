@@ -2,7 +2,7 @@ FROM microsoft/dotnet:2.1-sdk AS builder
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ["aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj" "aspnet-core-dotnet-core"/]
+COPY "aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj" "aspnet-core-dotnet-core/"
 RUN dotnet restore
 
 # Copy everything else and build
